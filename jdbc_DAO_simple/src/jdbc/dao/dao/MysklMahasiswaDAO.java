@@ -5,7 +5,6 @@
  */
 package jdbc.dao.dao;
 
-import db.util.DBUtilities;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,10 +36,10 @@ public class MysklMahasiswaDAO {
         try {
             st = koneksi.createStatement();
             System.out.println("Obj berhasil");
-            String kueri = "INSERT into mahasiswa(id,name) VALUES ('" + mhs.getId() + "','" + mhs.getNama() + "')";
+            String kueri = "INSERT into mahasiswa(id,nama) VALUES ('" + mhs.getId() + "','" + mhs.getNama() + "')";
             st.execute(kueri);
         } catch (SQLException e) {
-            System.out.println("Add gagal");
+            System.out.println("Add gagal: "+ e.getMessage());
         }
     }
 
@@ -49,10 +48,10 @@ public class MysklMahasiswaDAO {
         try {
             st = koneksi.createStatement();
             System.out.println("Obj berhasil");
-            String kueri = "UPDATE mahasiswa SET name='" + mhs.getNama() + "' WHERE id='" + mhs.getId() + "'";
+            String kueri = "UPDATE mahasiswa SET nama='" + mhs.getNama() + "' WHERE id='" + mhs.getId() + "'";
             st.execute(kueri);
         } catch (SQLException e) {
-            System.out.println("Update gagal");
+            System.out.println("Update gagal: "+ e.getMessage());
         }
     }
 
@@ -65,7 +64,7 @@ public class MysklMahasiswaDAO {
             String kueri = "DELETE FROM mahasiswa WHERE id='" + id + "'";
             st.execute(kueri);
         } catch (SQLException e) {
-            System.out.println("delete gagal");
+            System.out.println("delete gagal: "+ e.getMessage());
         }
     }
 
@@ -82,13 +81,13 @@ public class MysklMahasiswaDAO {
             
             if(rs.next()){
                 mhs.setId(rs.getInt("id"));
-                mhs.setNama(rs.getString("name"));
+                mhs.setNama(rs.getString("nama"));
                 return mhs;
             }else{
                 return null;
             }
         }catch (SQLException e){
-            System.out.println("getByID gagal");
+            System.out.println("getByID gagal:"+ e.getMessage());
         }
         return null;
     }
@@ -106,7 +105,7 @@ public class MysklMahasiswaDAO {
             while (rs.next()) {
                 Mahasiswa mhs = new Mahasiswa();
                 mhs.setId(rs.getInt("id"));
-                mhs.setNama(rs.getString("name"));
+                mhs.setNama(rs.getString("nama"));
                 list.add(mhs);
             }
         } catch (SQLException ex) {

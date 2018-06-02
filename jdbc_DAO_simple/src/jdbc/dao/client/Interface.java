@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jdbc.utilities;
+package jdbc.dao.client;
 
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -15,17 +15,20 @@ import jdbc.dao.transferObject.Mahasiswa;
  * @author Ikhsan
  */
 public class Interface extends javax.swing.JFrame {
-    DefaultListModel dlmID, dlmName;
+    
+    MysklMahasiswaDAO myskl;
+    DefaultListModel<String> dlmID, dlmName;
     
     /**
      * Creates new form Interface
      */
     public Interface() {
         initComponents();
-        this.dlmID = new DefaultListModel<>();
-        this.dlmName = new DefaultListModel<>();
-        this.list_ID.setModel(dlmID);
-        this.list_nama.setModel(dlmName);
+        myskl = new MysklMahasiswaDAO();
+        dlmID = new DefaultListModel<>();
+        dlmName = new DefaultListModel<>();
+        list_ID.setModel(dlmID);
+        list_nama.setModel(dlmName);
     }
 
     /**
@@ -60,6 +63,11 @@ public class Interface extends javax.swing.JFrame {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        list_ID.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                list_IDValueChanged(evt);
+            }
         });
         jScrollPane1.setViewportView(list_ID);
 
@@ -203,21 +211,19 @@ public class Interface extends javax.swing.JFrame {
         update();
     }//GEN-LAST:event_button_AmbilSemuaDataActionPerformed
 
-    private void update(){
-        dlmID.clear();dlmName.clear();
-        
-        MysklMahasiswaDAO myskl = new MysklMahasiswaDAO();
+    private void update() {
+        dlmID.clear();
+        dlmName.clear();
         List<Mahasiswa> datas = myskl.getAll();
-        
-        for(Mahasiswa data: datas){
-            dlmID.addElement(data.getId());
+
+        for (Mahasiswa data : datas) {
+            dlmID.addElement(String.valueOf(data.getId()));
             dlmName.addElement(data.getNama());
         }
     }
-    
+
     private void button_TambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_TambahActionPerformed
         // TODO add your handling code here:
-        MysklMahasiswaDAO myskl = new MysklMahasiswaDAO();
         Mahasiswa mhsAdd = new Mahasiswa();
         mhsAdd.setNama(textField_Nama.getText());
         myskl.add(mhsAdd);
@@ -231,7 +237,6 @@ public class Interface extends javax.swing.JFrame {
 
     private void button_EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_EditActionPerformed
         // TODO add your handling code here:
-        MysklMahasiswaDAO myskl = new MysklMahasiswaDAO();
         Mahasiswa mhsUpdate = new Mahasiswa();
         int id = Integer.valueOf(textField_updateID.getText());
         mhsUpdate.setId(id);
@@ -244,7 +249,6 @@ public class Interface extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        MysklMahasiswaDAO myskl = new MysklMahasiswaDAO();
         int id = Integer.valueOf(textField_delete.getText());
         myskl.delete(id);
         update();
@@ -254,6 +258,14 @@ public class Interface extends javax.swing.JFrame {
     private void textField_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField_deleteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textField_deleteActionPerformed
+
+    private void list_IDValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_list_IDValueChanged
+        // TODO add your handling code here:
+        textField_updateID.setText(list_ID.getSelectedValue());
+        textField_delete.setText(list_ID.getSelectedValue());
+        
+        textField_updateNama.setText(dlmName.get(list_ID.getSelectedIndex()));
+    }//GEN-LAST:event_list_IDValueChanged
 
     /**
      * @param args the command line arguments

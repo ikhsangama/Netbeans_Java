@@ -20,13 +20,13 @@ public class MysklUtility {
         if (koneksi == null) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
-                String url = "jdbc:mysql://localhost:3306/jdbc_data";
+                String url = "jdbc:mysql://localhost:3306/jdbc_mhs";
                 String user = "root", password = "";
                 koneksi = DriverManager.getConnection(url, user, password);
             } catch (ClassNotFoundException e) {
-                System.out.println("gagal 1");
-            } catch (SQLException sqle) {
-                System.out.println("gagal 2");
+                System.out.println("gagal utilities, ClassNotFoundEx: "+ e.getMessage());
+            } catch (SQLException e) {
+                System.out.println("gagal utilities,SKLEx: "+ e.getMessage());
             }
         }
         return koneksi;

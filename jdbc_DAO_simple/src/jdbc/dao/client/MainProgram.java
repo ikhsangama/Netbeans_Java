@@ -5,7 +5,6 @@
  */
 package jdbc.dao.client;
 
-import db.util.DBUtilities;
 import jdbc.dao.dao.MysklMahasiswaDAO;
 import jdbc.dao.transferObject.Mahasiswa;
 import jdbc.utilities.MysklUtility;
